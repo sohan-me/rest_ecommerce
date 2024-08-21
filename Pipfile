@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "5.0.7"
+pillow = "10.4.0"
+djangorestframework = "*"
+django-mptt = "==0.16.0"
+drf-spectacular = {extras = ["sidecar"] }
+django-nested-admin = "==4.1.0"
+django-cors-headers = "==4.4.0"
+django-session-timeout = "*"
+djangorestframework-simplejwt = "*"
+pyjwt = "*"
+stripe = "*"
+python-decouple = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"

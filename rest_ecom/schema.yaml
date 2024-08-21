@@ -1,0 +1,1118 @@
+openapi: 3.0.3
+info:
+  title: Rest Ecommerce
+  version: 1.0.0
+  description: Ecommerce webapp API
+paths:
+  /api/brand/:
+    get:
+      operationId: brand_list
+      description: Retrieve a list of all brands
+      tags:
+      - brand
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /api/cart/:
+    get:
+      operationId: cart_list
+      description: Retrieve all the cart items available in cart
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+          description: ''
+  /api/cart-item/{product_line_id}/:
+    delete:
+      operationId: cart_item_destroy
+      parameters:
+      - in: path
+        name: product_line_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - cart-item
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/cart-item/add/:
+    post:
+      operationId: cart_item_add_create
+      tags:
+      - cart-item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CartItemRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CartItemRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+  /api/cart-item/decrease/:
+    patch:
+      operationId: cart_item_decrease_partial_update
+      tags:
+      - cart-item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItemRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItemRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItemRequest'
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+  /api/cart/remove/:
+    delete:
+      operationId: cart_remove_destroy
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/category/:
+    get:
+      operationId: category_list
+      description: Retrieve a list of all categories
+      tags:
+      - category
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /api/checkout/:
+    post:
+      operationId: checkout_create
+      description: order related details and create order
+      tags:
+      - checkout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checkout'
+          description: ''
+  /api/payment/:
+    post:
+      operationId: payment_create
+      description: order related details and create a order
+      tags:
+      - payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/product/:
+    get:
+      operationId: product_list
+      description: Retrieve a list of all products
+      tags:
+      - product
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /api/product/categorize-products/{category_id}/:
+    get:
+      operationId: product_categorize_products_retrieve
+      parameters:
+      - in: path
+        name: category_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - product
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/product/details/{product_id}/:
+    get:
+      operationId: product_details_retrieve
+      parameters:
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - product
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+        required: true
+      security:
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      security:
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/user/change_password:
+    post:
+      operationId: user_change_password_create
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          description: No response body
+  /api/user/login/:
+    post:
+      operationId: user_login_create
+      description: User login area
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/user/profile/:
+    get:
+      operationId: user_profile_retrieve
+      description: Retrieve user profile and orders or update profile information
+      tags:
+      - user
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    patch:
+      operationId: user_profile_partial_update
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserRequest'
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+  /api/user/register/:
+    post:
+      operationId: user_register_create
+      description: Register a user.
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/user/reset-password/{uid}/{token}/:
+    post:
+      operationId: user_reset_password_create
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uid
+        schema:
+          type: string
+        required: true
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPasswordResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user/send-reset-password/:
+    post:
+      operationId: user_send_reset_password_create
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendPasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendPasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendPasswordResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendPasswordReset'
+          description: ''
+components:
+  schemas:
+    Brand:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+      required:
+      - name
+    Cart:
+      type: object
+      properties:
+        cart_id:
+          type: string
+          maxLength: 250
+        user:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+    CartItem:
+      type: object
+      properties:
+        product_line_id:
+          type: string
+          maxLength: 200
+        quantity:
+          type: string
+          maxLength: 200
+      required:
+      - product_line_id
+      - quantity
+    CartItemRequest:
+      type: object
+      properties:
+        product_line_id:
+          type: string
+          minLength: 1
+          maxLength: 200
+        quantity:
+          type: string
+          minLength: 1
+          maxLength: 200
+      required:
+      - product_line_id
+      - quantity
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        parent:
+          type: integer
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      required:
+      - name
+    ChangePasswordRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 255
+        confirm_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 255
+      required:
+      - confirm_password
+      - current_password
+      - password
+    Checkout:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        address_line:
+          type: string
+          maxLength: 255
+        landmark:
+          type: string
+          nullable: true
+          maxLength: 255
+        country:
+          type: string
+          maxLength: 50
+        state:
+          type: string
+          maxLength: 50
+        city:
+          type: string
+          maxLength: 50
+        order_note:
+          type: string
+          maxLength: 255
+        order_total:
+          type: number
+          format: double
+          readOnly: true
+        tax:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - address_line
+      - city
+      - country
+      - email
+      - name
+      - order_note
+      - order_total
+      - phone
+      - state
+      - tax
+    CheckoutRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        address_line:
+          type: string
+          minLength: 1
+          maxLength: 255
+        landmark:
+          type: string
+          nullable: true
+          maxLength: 255
+        country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        state:
+          type: string
+          minLength: 1
+          maxLength: 50
+        city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        order_note:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - address_line
+      - city
+      - country
+      - email
+      - name
+      - order_note
+      - phone
+      - state
+    CustomUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        phone_number:
+          type: string
+          maxLength: 20
+        userprofile:
+          $ref: '#/components/schemas/UserProfile'
+      required:
+      - first_name
+      - id
+      - last_name
+      - phone_number
+      - userprofile
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        password:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - password
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - email
+      - password
+    PatchedCartItemRequest:
+      type: object
+      properties:
+        product_line_id:
+          type: string
+          minLength: 1
+          maxLength: 200
+        quantity:
+          type: string
+          minLength: 1
+          maxLength: 200
+    PatchedCustomUserRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        phone_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        userprofile:
+          $ref: '#/components/schemas/UserProfileRequest'
+    Payment:
+      type: object
+      properties:
+        payment_method_id:
+          type: string
+          maxLength: 255
+        order_number:
+          type: string
+          maxLength: 255
+      required:
+      - order_number
+      - payment_method_id
+    PaymentRequest:
+      type: object
+      properties:
+        payment_method_id:
+          type: string
+          minLength: 1
+          maxLength: 255
+        order_number:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - order_number
+      - payment_method_id
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        brand:
+          $ref: '#/components/schemas/Brand'
+        category:
+          $ref: '#/components/schemas/Category'
+        description:
+          type: string
+          nullable: true
+        is_digital:
+          type: boolean
+        productline:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductLine'
+      required:
+      - brand
+      - category
+      - name
+      - productline
+    ProductLine:
+      type: object
+      properties:
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        sku:
+          type: string
+          maxLength: 50
+        order_by:
+          type: boolean
+        productlineimage:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductLineImage'
+      required:
+      - price
+      - productlineimage
+      - sku
+      - stock
+    ProductLineImage:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        alter_text:
+          type: string
+          maxLength: 100
+        image_url:
+          type: string
+          format: uri
+        order_by:
+          type: boolean
+      required:
+      - alter_text
+      - image_url
+      - name
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        phone_number:
+          type: string
+          maxLength: 20
+      required:
+      - email
+      - first_name
+      - last_name
+      - phone_number
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        phone_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 128
+        confirm_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - confirm_password
+      - email
+      - first_name
+      - last_name
+      - password
+      - phone_number
+    SendPasswordReset:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+      required:
+      - email
+    SendPasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 255
+      required:
+      - email
+    TokenObtainPair:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+      required:
+      - access
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - refresh
+    UserPasswordResetRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 255
+        confirm_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+          maxLength: 255
+      required:
+      - confirm_password
+      - password
+    UserProfile:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 200
+        address_line_2:
+          type: string
+          maxLength: 200
+        profile_image:
+          type: string
+          format: uri
+          nullable: true
+        city:
+          type: string
+          maxLength: 20
+        state:
+          type: string
+          maxLength: 20
+        country:
+          type: string
+          maxLength: 30
+    UserProfileRequest:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 200
+        address_line_2:
+          type: string
+          maxLength: 200
+        profile_image:
+          type: string
+          format: binary
+          nullable: true
+        city:
+          type: string
+          maxLength: 20
+        state:
+          type: string
+          maxLength: 20
+        country:
+          type: string
+          maxLength: 30
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
